@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emerald AI — AI for Your Business. No Learning Required.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0C2340;
+    --navy-mid: #163760;
+    --navy-light: #1E4D8C;
+    --gold: #C4922A;
+    --gold-light: #E8B84B;
+    --cream: #FBF8F2;
+    --cream-dark: #F2EDE3;
+    --white: #FFFFFF;
+    --text-dark: #0C1B2E;
+    --text-mid: #3D5166;
+    --text-muted: #7A90A4;
+    --border: #DDD5C8;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur-fast: 180ms;
+    --dur-mid: 320ms;
+    --dur-slow: 640ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white); color: var(--text-dark);
+    font-family: var(--font-sans); overflow-x: hidden;
+    letter-spacing: -0.005em;
+  }
+  p, li { letter-spacing: 0; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* ══════════════════════════════════════════
+     KEYFRAMES
+  ══════════════════════════════════════════ */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlideRight {
+    from { opacity: 0; transform: translateX(36px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes widthOpen {
+    from { width: 0; }
+    to   { width: var(--w-target, 40px); }
+  }
+
+  /* ══════════════════════════════════════════
+     NAV
+  ══════════════════════════════════════════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem; height: 70px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow var(--dur-mid) var(--ease-std),
+                background var(--dur-mid) var(--ease-std);
+  }
+  nav.scrolled {
+    box-shadow: 0 2px 28px rgba(12,35,64,0.12);
+    background: rgba(255,255,255,0.99);
+    border-bottom-color: transparent;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 36px; background: var(--navy);
+    display: grid; place-items: center;
+    transition: transform var(--dur-mid) var(--ease-expo);
+  }
+  .nav-logo:hover .nav-logo-mark { transform: rotate(30deg); }
+  .nav-logo-mark svg { color: var(--gold); }
+  .nav-brand { font-family: var(--font-serif); font-size: 1.1rem; color: var(--navy); font-weight: 600; letter-spacing: 0.01em; }
+  .nav-brand span { color: var(--gold); }
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.88rem; color: var(--text-mid); text-decoration: none; font-weight: 500;
+    transition: color var(--dur-fast);
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform var(--dur-mid) var(--ease-expo);
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta {
+    font-size: 0.85rem; padding: 0.6rem 1.5rem;
+    background: var(--navy); color: var(--white);
+    border: none; cursor: pointer; font-weight: 600;
+    text-decoration: none; font-family: var(--font-sans);
+    transition: background var(--dur-fast),
+                transform var(--dur-fast),
+                box-shadow var(--dur-fast);
+    display: inline-block;
+  }
+  .nav-cta:hover {
+    background: var(--navy-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(12,35,64,0.22);
+  }
+  .nav-cta:active { transform: translateY(0); box-shadow: none; }
+
+  /* ══════════════════════════════════════════
+     HERO
+  ══════════════════════════════════════════ */
+  #hero {
+    padding-top: 70px; min-height: 100vh;
+    display: flex; align-items: center;
+    background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image:
+      radial-gradient(circle at 25% 50%, var(--gold) 0%, transparent 50%),
+      radial-gradient(circle at 75% 20%, #4A90D9 0%, transparent 40%);
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image:
+      linear-gradient(var(--white) 1px, transparent 1px),
+      linear-gradient(90deg, var(--white) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-inner {
+    position: relative; z-index: 1; max-width: 1200px; margin: 0 auto;
+    padding: 5rem 3rem;
+    display: grid; grid-template-columns: 1fr 420px;
+    gap: 5rem; align-items: center;
+  }
+
+  /* Hero entrance — purely CSS, fires on load */
+  .hero-eyebrow  { animation: fadeSlideUp var(--dur-slow) var(--ease-expo) both 0.15s; }
+  .hero-headline { animation: fadeSlideUp var(--dur-slow) var(--ease-expo) both 0.32s; }
+  .hero-sub      { animation: fadeSlideUp var(--dur-slow) var(--ease-expo) both 0.52s; }
+  .hero-actions  { animation: fadeSlideUp var(--dur-slow) var(--ease-expo) both 0.68s; }
+  .hero-trust-strip { animation: fadeSlideUp 0.7s var(--ease-expo) both 0.86s; }
+  .hero-card        { animation: fadeSlideRight 0.8s var(--ease-expo) both 0.55s; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.75rem;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 2px; background: var(--gold); }
+  .hero-headline {
+    font-family: var(--font-serif); font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 700; line-height: 1.1; color: var(--white);
+    margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  }
+  .hero-headline em { font-style: italic; color: var(--gold-light); }
+  .hero-sub {
+    font-size: 1.08rem; color: rgba(255,255,255,0.7);
+    line-height: 1.78; max-width: 520px; margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-gold {
+    font-size: 0.9rem; padding: 0.875rem 2rem;
+    background: var(--gold); color: var(--navy);
+    border: none; cursor: pointer; font-weight: 700;
+    text-decoration: none; font-family: var(--font-sans);
+    transition: background var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-fast);
+    display: inline-block;
+  }
+  .btn-gold:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(196,146,42,0.4);
+  }
+  .btn-gold:active { transform: translateY(0); box-shadow: none; }
+
+  .btn-outline-white {
+    font-size: 0.9rem; padding: 0.875rem 2rem;
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,0.3); cursor: pointer;
+    font-weight: 500; text-decoration: none; font-family: var(--font-sans);
+    transition: border-color var(--dur-fast), transform var(--dur-fast), background var(--dur-fast);
+    display: inline-block;
+  }
+  .btn-outline-white:hover {
+    border-color: rgba(255,255,255,0.7);
+    transform: translateY(-2px);
+    background: rgba(255,255,255,0.06);
+  }
+  .btn-outline-white:active { transform: translateY(0); }
+
+  .hero-trust-strip {
+    display: flex; gap: 2.5rem; margin-top: 3.5rem;
+    padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .trust-num .big { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--gold-light); }
+  .trust-num .lbl { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.2rem; line-height: 1.4; }
+
+  .hero-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px); padding: 2rem;
+    transition: border-color var(--dur-mid);
+  }
+  .hero-card:hover { border-color: rgba(196,146,42,0.3); }
+  .hero-card-title {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .result-item {
+    padding: 1.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: transform var(--dur-fast);
+  }
+  .result-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .result-item:hover { transform: translateX(4px); }
+  .result-icon {
+    width: 36px; height: 36px; background: rgba(196,146,42,0.15);
+    border: 1px solid rgba(196,146,42,0.3);
+    display: grid; place-items: center; flex-shrink: 0; color: var(--gold); margin-top: 2px;
+    transition: background var(--dur-fast), border-color var(--dur-fast);
+  }
+  .result-item:hover .result-icon { background: rgba(196,146,42,0.28); border-color: rgba(196,146,42,0.6); }
+  .result-name { font-size: 0.88rem; color: var(--white); font-weight: 600; }
+  .result-desc { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.2rem; line-height: 1.5; }
+  .result-num { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--gold-light); margin-top: 0.5rem; }
+
+  /* ══════════════════════════════════════════
+     SECTIONS
+  ══════════════════════════════════════════ */
+  .section-cream { background: var(--cream); }
+  .section-white { background: var(--white); }
+  .section-navy  { background: var(--navy); }
+  .section-inner      { max-width: 1100px; margin: 0 auto; padding: 5rem 3rem; }
+  .section-inner-wide { max-width: 1200px; margin: 0 auto; padding: 5rem 3rem; }
+
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--gold); }
+  .section-title {
+    font-family: var(--font-serif); font-size: clamp(2rem, 3.5vw, 2.9rem);
+    font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; color: var(--navy);
+  }
+  .section-title-white { color: var(--white); }
+  .section-sub {
+    font-size: 1rem; color: var(--text-mid); line-height: 1.78; max-width: 580px; margin-top: 1rem;
+  }
+
+  /* ══════════════════════════════════════════
+     PROBLEM
+  ══════════════════════════════════════════ */
+  .problem-body-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    align-items: start; margin-top: 3rem;
+  }
+  .problem-list { display: flex; flex-direction: column; gap: 0; }
+  .problem-item {
+    display: flex; gap: 1.25rem; padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border); align-items: flex-start;
+    transition: transform var(--dur-fast);
+  }
+  .problem-item:hover { transform: translateX(5px); }
+  .problem-item:first-child { border-top: 1px solid var(--border); }
+  .problem-num {
+    font-family: var(--font-serif); font-size: 2.5rem; font-weight: 700;
+    color: var(--border); line-height: 1; flex-shrink: 0; width: 50px;
+    transition: color var(--dur-mid);
+  }
+  .problem-item:hover .problem-num { color: var(--gold); }
+  .problem-body h4 { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.35rem; }
+  .problem-body p  { font-size: 0.88rem; color: var(--text-mid); line-height: 1.68; }
+  .problem-visual {
+    background: var(--navy); padding: 3rem 2.5rem;
+    position: relative; overflow: hidden;
+  }
+  .pv-headline { font-family: var(--font-serif); font-size: 1.6rem; color: var(--white); font-weight: 700; line-height: 1.3; margin-bottom: 1.5rem; }
+  .pv-headline em { font-style: italic; color: var(--gold-light); }
+  .pv-quote { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.78; font-style: italic; border-left: 3px solid var(--gold); padding-left: 1.25rem; }
+  .pv-author { margin-top: 1.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+  .pv-author strong { color: rgba(255,255,255,0.7); font-style: normal; }
+  .pv-deco  { position: absolute; bottom: -30px; right: -30px; width: 120px; height: 120px; border: 1px solid rgba(196,146,42,0.2); border-radius: 50%; }
+  .pv-deco2 { position: absolute; bottom: -15px; right: -15px; width: 80px;  height: 80px;  border: 1px solid rgba(196,146,42,0.15); border-radius: 50%; }
+
+  /* ══════════════════════════════════════════
+     PROCESS
+  ══════════════════════════════════════════ */
+  #process { background: var(--cream); }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 3rem; background: var(--border);
+  }
+  .process-step {
+    background: var(--cream); padding: 2.5rem 2rem;
+    position: relative;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s var(--ease-expo),
+                transform 0.6s var(--ease-expo),
+                background var(--dur-mid);
+  }
+  .process-step.visible { opacity: 1; transform: none; }
+  .process-step:nth-child(1) { transition-delay: 0s; }
+  .process-step:nth-child(2) { transition-delay: 0.13s; }
+  .process-step:nth-child(3) { transition-delay: 0.26s; }
+  .process-step:hover { background: var(--white); }
+
+  .step-num-big {
+    font-family: var(--font-serif); font-size: 5rem; font-weight: 700;
+    color: var(--cream-dark); line-height: 1; margin-bottom: 1.5rem; user-select: none;
+    transition: color var(--dur-mid);
+  }
+  .process-step:hover .step-num-big { color: rgba(196,146,42,0.22); }
+
+  .step-accent {
+    width: 0; height: 3px; background: var(--gold); margin-bottom: 1.5rem;
+    transition: width 0.65s var(--ease-expo) 0.22s;
+  }
+  .process-step.visible .step-accent { width: 40px; }
+
+  .step-title { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+  .step-desc  { font-size: 0.88rem; color: var(--text-mid); line-height: 1.72; }
+
+  /* ══════════════════════════════════════════
+     SERVICES
+  ══════════════════════════════════════════ */
+  #services { background: var(--white); }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); }
+
+  .service-card {
+    background: var(--white); padding: 2.5rem;
+    cursor: default; position: relative; overflow: hidden;
+    transition: background var(--dur-mid),
+                transform var(--dur-mid) var(--ease-expo),
+                box-shadow var(--dur-mid);
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.45s var(--ease-expo);
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover {
+    background: var(--cream);
+    transform: translateY(-5px);
+    box-shadow: 0 18px 44px rgba(12,35,64,0.1);
+  }
+  .service-icon {
+    width: 52px; height: 52px; background: var(--cream); border: 1px solid var(--border);
+    display: grid; place-items: center; margin-bottom: 1.5rem; color: var(--navy);
+    transition: background var(--dur-mid), border-color var(--dur-mid),
+                color var(--dur-mid), transform var(--dur-mid) var(--ease-expo);
+  }
+  .service-card:hover .service-icon {
+    background: rgba(196,146,42,0.08); border-color: var(--gold); color: var(--gold);
+    transform: scale(1.1) rotate(6deg);
+  }
+  .service-name { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+  .service-desc { font-size: 0.88rem; color: var(--text-mid); line-height: 1.72; margin-bottom: 1.5rem; }
+  .service-examples { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .example-chip {
+    font-size: 0.72rem; padding: 0.3rem 0.65rem;
+    background: var(--cream); border: 1px solid var(--border);
+    color: var(--text-mid); font-weight: 500;
+    transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+  }
+  .example-chip:hover { background: var(--cream-dark); border-color: var(--gold); color: var(--navy); }
+
+  /* ══════════════════════════════════════════
+     RESULTS
+  ══════════════════════════════════════════ */
+  #results { background: var(--navy); }
+  .results-header { text-align: center; margin-bottom: 3.5rem; }
+  .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .result-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    padding: 2.5rem;
+    transition: background var(--dur-mid), border-color var(--dur-mid),
+                transform var(--dur-mid) var(--ease-expo);
+  }
+  .result-card:hover {
+    background: rgba(255,255,255,0.09);
+    border-color: rgba(196,146,42,0.38);
+    transform: translateY(-4px);
+  }
+  .result-card-industry {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .result-card-industry::before { content: ''; display: block; width: 12px; height: 1px; background: var(--gold); }
+  .result-story { font-family: var(--font-serif); font-size: 1.05rem; color: var(--white); line-height: 1.68; margin-bottom: 1.5rem; }
+  .result-numbers { display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  .rn-val { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--gold-light); }
+  .rn-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
+
+  /* ══════════════════════════════════════════
+     WHY US
+  ══════════════════════════════════════════ */
+  #why { background: var(--cream); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .why-points { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .why-point { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .why-check {
+    width: 24px; height: 24px; background: var(--navy);
+    display: grid; place-items: center; flex-shrink: 0; margin-top: 2px;
+    transition: background var(--dur-fast), transform var(--dur-fast) var(--ease-expo);
+  }
+  .why-point:hover .why-check { background: var(--gold); transform: scale(1.18); }
+  .why-check svg { color: var(--gold); transition: color var(--dur-fast); }
+  .why-point:hover .why-check svg { color: var(--navy); }
+  .why-point h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+  .why-point p  { font-size: 0.85rem; color: var(--text-mid); line-height: 1.68; }
+
+  .why-right { background: var(--navy); padding: 3rem; }
+  .why-right-title { font-family: var(--font-serif); font-size: 1.5rem; color: var(--white); font-weight: 700; margin-bottom: 1.5rem; line-height: 1.3; }
+  .why-right-title em { font-style: italic; color: var(--gold-light); }
+  .trust-badges { display: flex; flex-direction: column; gap: 1rem; }
+
+  /* Trust badge stagger — triggered when parent gets .visible */
+  .trust-badge {
+    display: flex; gap: 1rem; align-items: center; padding: 1rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    opacity: 0; transform: translateX(-10px);
+    transition: opacity 0.5s var(--ease-expo),
+                transform 0.5s var(--ease-expo),
+                background var(--dur-fast),
+                border-color var(--dur-fast);
+  }
+  .reveal.visible .trust-badge { opacity: 1; transform: none; }
+  .reveal.visible .trust-badge:nth-child(1) { transition-delay: 0.12s; }
+  .reveal.visible .trust-badge:nth-child(2) { transition-delay: 0.22s; }
+  .reveal.visible .trust-badge:nth-child(3) { transition-delay: 0.32s; }
+  .reveal.visible .trust-badge:nth-child(4) { transition-delay: 0.42s; }
+  .trust-badge:hover {
+    background: rgba(255,255,255,0.11);
+    border-color: rgba(196,146,42,0.32);
+    transform: translateX(5px) !important;
+  }
+  .tb-icon {
+    width: 40px; height: 40px; background: rgba(196,146,42,0.15); border: 1px solid rgba(196,146,42,0.25);
+    display: grid; place-items: center; flex-shrink: 0; color: var(--gold);
+    transition: background var(--dur-fast);
+  }
+  .trust-badge:hover .tb-icon { background: rgba(196,146,42,0.28); }
+  .tb-text .t { font-size: 0.88rem; color: var(--white); font-weight: 600; }
+  .tb-text .s { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 0.15rem; }
+
+  /* ══════════════════════════════════════════
+     CONTACT
+  ══════════════════════════════════════════ */
+  #contact { background: var(--white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-form-title { font-family: var(--font-serif); font-size: 1.8rem; color: var(--navy); font-weight: 700; margin-bottom: 0.5rem; }
+  .contact-form-sub { font-size: 0.88rem; color: var(--text-mid); margin-bottom: 2rem; line-height: 1.62; }
+  .form-row { margin-bottom: 1.25rem; }
+  .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--navy); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .form-input {
+    width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--border);
+    background: var(--cream); color: var(--text-dark);
+    font-family: var(--font-sans); font-size: 0.9rem; outline: none;
+    transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .form-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(12,35,64,0.07); }
+  .form-select {
+    width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--border);
+    background: var(--cream); color: var(--text-dark);
+    font-family: var(--font-sans); font-size: 0.9rem; outline: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230C2340' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 1rem center;
+    transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .form-select:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(12,35,64,0.07); }
+  .form-textarea {
+    width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--border);
+    background: var(--cream); color: var(--text-dark);
+    font-family: var(--font-sans); font-size: 0.9rem;
+    outline: none; resize: none; line-height: 1.62;
+    transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .form-textarea:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(12,35,64,0.07); }
+  .form-submit {
+    width: 100%; padding: 1rem; background: var(--navy); color: var(--white);
+    border: none; font-family: var(--font-sans); font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; margin-top: 0.5rem;
+    transition: background var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .form-submit:hover {
+    background: var(--navy-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(12,35,64,0.22);
+  }
+  .form-submit:active { transform: translateY(0); box-shadow: none; }
+
+  .contact-info { padding-top: 1rem; }
+  .contact-info-title { font-family: var(--font-serif); font-size: 2rem; color: var(--navy); font-weight: 700; line-height: 1.25; margin-bottom: 1.25rem; }
+  .contact-info-title em { font-style: italic; color: var(--gold); }
+  .contact-info-body { font-size: 0.9rem; color: var(--text-mid); line-height: 1.78; margin-bottom: 2rem; }
+  .info-blocks { display: flex; flex-direction: column; gap: 1rem; }
+  .info-block {
+    display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem;
+    background: var(--cream); border: 1px solid var(--border);
+    transition: background var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+  }
+  .info-block:hover { background: var(--cream-dark); border-color: var(--gold); transform: translateX(4px); }
+  .ib-icon { width: 40px; height: 40px; background: var(--navy); display: grid; place-items: center; flex-shrink: 0; color: var(--gold); }
+  .ib-text .l { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+  .ib-text .v { font-size: 0.9rem; color: var(--navy); font-weight: 500; }
+  .ib-text .v a { color: var(--navy-light); text-decoration: none; }
+
+  /* ══════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════ */
+  footer {
+    background: var(--navy); padding: 2.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 3px solid var(--gold);
+  }
+  .footer-logo { display: flex; align-items: center; gap: 0.75rem; }
+  .footer-brand { font-family: var(--font-serif); font-size: 1rem; color: var(--white); font-weight: 600; }
+  .footer-brand span { color: var(--gold); }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a {
+    font-size: 0.78rem; color: rgba(255,255,255,0.45); text-decoration: none;
+    display: inline-block;
+    transition: color var(--dur-fast), transform var(--dur-fast);
+  }
+  .footer-links a:hover { color: var(--gold); transform: translateY(-1px); }
+
+  /* ══════════════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════════════ */
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.7s var(--ease-expo), transform 0.7s var(--ease-expo);
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.10s; }
+  .reveal-delay-2 { transition-delay: 0.20s; }
+  .reveal-delay-3 { transition-delay: 0.30s; }
+  .reveal-delay-4 { transition-delay: 0.40s; }
+  .reveal-delay-5 { transition-delay: 0.50s; }
+
+  /* ── GOLD RULE (animated width) ── */
+  .gold-rule {
+    width: 0; height: 3px; background: var(--gold); margin: 1.5rem 0;
+    transition: width 0.85s var(--ease-expo);
+  }
+  .gold-rule.visible { width: 60px; }
+
+  /* ── COUNTER ── */
+  .count-up { font-family: var(--font-serif); }
+
+  /* ══════════════════════════════════════════
+     HAMBURGER + MOBILE MENU
+  ══════════════════════════════════════════ */
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 4px; background: none; border: none;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 2px; background: var(--navy);
+    transition: transform var(--dur-mid) var(--ease-expo),
+                opacity var(--dur-fast),
+                width var(--dur-fast);
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: block;
+    position: fixed; top: 70px; left: 0; right: 0;
+    background: var(--white); border-bottom: 1px solid var(--border);
+    z-index: 99; padding: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transform: translateY(-12px);
+    opacity: 0; pointer-events: none;
+    transition: transform var(--dur-mid) var(--ease-expo),
+                opacity var(--dur-fast);
+  }
+  .mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+  .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .mobile-menu ul li a {
+    display: block; padding: 0.875rem 0;
+    font-size: 1rem; color: var(--text-dark); text-decoration: none;
+    font-weight: 500; border-bottom: 1px solid var(--border);
+    transition: color var(--dur-fast), padding-left var(--dur-fast);
+  }
+  .mobile-menu ul li a:hover { color: var(--navy); padding-left: 0.5rem; }
+  .mobile-menu ul li:last-child a { border-bottom: none; }
+  .mobile-menu .mob-cta {
+    display: block; margin-top: 1.25rem; width: 100%; text-align: center;
+    padding: 0.9rem; background: var(--navy); color: var(--white);
+    text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    transition: background var(--dur-fast);
+  }
+  .mobile-menu .mob-cta:hover { background: var(--navy-mid); }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-card { display: none; }
+    .problem-body-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .why-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .results-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+    .section-inner, .section-inner-wide { padding: 3rem 1.25rem; }
+    .hero-inner { padding: 2.5rem 1.25rem; }
+    .hero-headline { font-size: 2.4rem; }
+    .hero-sub { font-size: 0.95rem; }
+    .hero-trust-strip { flex-wrap: wrap; gap: 1.5rem; }
+    .btn-gold, .btn-outline-white { width: 100%; text-align: center; }
+    .hero-actions { flex-direction: column; }
+    .problem-body-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr; }
+    .process-step { padding: 2rem 1.5rem; }
+    .results-grid { grid-template-columns: 1fr; }
+    .result-numbers { flex-wrap: wrap; gap: 1.25rem; }
+    .why-grid { grid-template-columns: 1fr; }
+    .why-right { padding: 2rem 1.5rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .section-title { font-size: 1.85rem; }
+    footer {
+      flex-direction: column; gap: 1.25rem;
+      text-align: center; padding: 2rem 1.25rem;
+    }
+    .footer-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
+  }
+
+  @media (max-width: 400px) {
+    .hero-headline { font-size: 2rem; }
+    .hero-trust-strip { flex-direction: column; gap: 1rem; }
+    .result-numbers { flex-direction: column; gap: 0.75rem; }
+  }
+
+  /* ══════════════════════════════════════════
+     REDUCED MOTION — accessibility override
+  ══════════════════════════════════════════ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal, .process-step { opacity: 1; transform: none; }
+    .gold-rule, .gold-rule.visible { width: 60px; }
+    .step-accent, .process-step.visible .step-accent { width: 40px; }
+    .trust-badge { opacity: 1; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M9 2L15.5 6V12L9 16L2.5 12V6L9 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="9" cy="9" r="2.5" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="nav-brand">EMERALD <span>AI</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#services">What We Do</a></li>
+    <li><a href="#results">Our Work</a></li>
+    <li><a href="#why">Why Us</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Talk to Us</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="#problem" onclick="closeMobileMenu()">The Problem</a></li>
+    <li><a href="#services" onclick="closeMobileMenu()">What We Do</a></li>
+    <li><a href="#results" onclick="closeMobileMenu()">Our Work</a></li>
+    <li><a href="#why" onclick="closeMobileMenu()">Why Us</a></li>
+  </ul>
+  <a href="#contact" class="mob-cta" onclick="closeMobileMenu()">Talk to Us</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">AI Solutions for Indian Businesses</div>
+      <h1 class="hero-headline">
+        AI does the work.<br>
+        <em>You take the credit.</em>
+      </h1>
+      <p class="hero-sub">We bring the power of AI directly into your business — completely set up and managed by us. No learning. No confusion. No stress. Just results you can see.</p>
+      <div class="hero-actions">
+        <a href="#process" class="btn-gold">See How It Works</a>
+        <a href="#contact" class="btn-outline-white">Talk to Us</a>
+      </div>
+      <div class="hero-trust-strip">
+        <div class="trust-num">
+          <div class="big count-up" data-target="5">0</div>
+          <div class="lbl">Businesses<br>already running on AI</div>
+        </div>
+        <div class="trust-num">
+          <div class="big">₹50L+</div>
+          <div class="lbl">Saved for our<br>clients this year</div>
+        </div>
+        <div class="trust-num">
+          <div class="big">99.7%</div>
+          <div class="lbl">Systems running<br>without interruption</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">What our clients see</div>
+      <div class="result-item">
+        <div class="result-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div>
+          <div class="result-name">40 hours saved every week</div>
+          <div class="result-desc">Work that used to take your team days, now happens automatically overnight.</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div>
+          <div class="result-name">Revenue up 30–40%</div>
+          <div class="result-desc">AI finds opportunities your team was too busy to notice.</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <div class="result-name">Decisions in minutes, not days</div>
+          <div class="result-desc">A clear picture of your business — every morning, automatically.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section id="problem" class="section-white">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">The Situation</div>
+    <h2 class="section-title reveal reveal-delay-1">You've heard about AI.<br>But you don't have time<br>to figure it out.</h2>
+    <div class="gold-rule"></div>
+    <div class="problem-body-grid">
+      <div>
+        <div class="problem-list reveal">
+          <div class="problem-item">
+            <div class="problem-num">01</div>
+            <div class="problem-body">
+              <h4>Everyone is talking about AI tools</h4>
+              <p>ChatGPT, automation, agents — there's a new thing every week. It's hard to know what's real and what's just noise.</p>
+            </div>
+          </div>
+          <div class="problem-item">
+            <div class="problem-num">02</div>
+            <div class="problem-body">
+              <h4>You don't have time to learn new technology</h4>
+              <p>Your team is busy running the business. You can't afford to spend months learning tools that may or may not work.</p>
+            </div>
+          </div>
+          <div class="problem-item">
+            <div class="problem-num">03</div>
+            <div class="problem-body">
+              <h4>You don't want to fall behind</h4>
+              <p>Your competitors are adopting AI. If you wait too long, you'll lose ground. But experimenting blindly is risky.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="problem-visual">
+          <div class="pv-headline">The good news: <em>you don't have to learn a thing.</em></div>
+          <div class="pv-quote">"I had no idea how AI would work for my business. Emerald came in, understood everything, and built something that just runs. My team loves it. I just see the results."</div>
+          <div class="pv-author"><strong>Anirudh Ganeriwal</strong> — Textile Exporter, Mumbai</div>
+          <div class="pv-deco"></div>
+          <div class="pv-deco2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="process" class="section-cream">
+  <div class="section-inner">
+    <div style="text-align:center;max-width:600px;margin:0 auto;" class="reveal">
+      <div class="section-eyebrow" style="justify-content:center;">How It Works</div>
+      <h2 class="section-title" style="text-align:center;">Three simple steps.<br>Then it runs itself.</h2>
+      <p class="section-sub" style="margin:1rem auto 0;text-align:center;">We handle the entire process. You make one decision at the start — to move forward — and we handle everything else.</p>
+    </div>
+    <div class="process-steps" style="margin-top:3rem;">
+      <div class="process-step">
+        <div class="step-num-big">01</div>
+        <div class="step-accent"></div>
+        <div class="step-title">We listen to you</div>
+        <div class="step-desc">You tell us about your business — the daily challenges, where you're losing time, where you're losing money. We ask the right questions. No jargon, no tech talk.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num-big">02</div>
+        <div class="step-accent"></div>
+        <div class="step-title">We build it for you</div>
+        <div class="step-desc">We design and build a custom AI system, made specifically for your business. Not an off-the-shelf product. Something that fits the way you work — completely managed by us.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num-big">03</div>
+        <div class="step-accent"></div>
+        <div class="step-title">It runs. You grow.</div>
+        <div class="step-desc">Your system goes live. We monitor it, keep it updated, and handle any issues. You just watch your business run smoother, faster, and smarter — every single day.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;" class="reveal">
+      <a href="#contact" class="btn-gold" style="color:var(--navy);">Start the Conversation</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section-white">
+  <div class="section-inner-wide">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <div class="section-eyebrow">What We Build</div>
+      <h2 class="section-title">Four ways we make<br>your business run better</h2>
+      <p class="section-sub">Each one is built specifically for your business. None of this is a standard product — it's all custom, all yours.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8l-1 4h10l-1-4z"/><path d="M9 14h6M12 11v6"/></svg>
+        </div>
+        <div class="service-name">Stop the Repetitive Work</div>
+        <div class="service-desc">Every business has tasks that happen again and again — data entry, follow-up emails, reports, approvals. We automate all of it. Your team gets their time back and your errors go down to near zero.</div>
+        <div class="service-examples">
+          <span class="example-chip">Invoicing</span>
+          <span class="example-chip">Follow-ups</span>
+          <span class="example-chip">Inventory alerts</span>
+          <span class="example-chip">Daily reports</span>
+          <span class="example-chip">Data entry</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="service-name">Know Your Business, Every Morning</div>
+        <div class="service-desc">Imagine waking up to a clear, simple summary of exactly how your business is doing — sales, expenses, stock levels, team performance — without asking anyone. We build that for you.</div>
+        <div class="service-examples">
+          <span class="example-chip">Daily briefings</span>
+          <span class="example-chip">Sales dashboards</span>
+          <span class="example-chip">Profit alerts</span>
+          <span class="example-chip">Market tracking</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="service-name">A Smart Team That Never Sleeps</div>
+        <div class="service-desc">AI agents that handle customer enquiries, qualify leads, answer questions, and follow up — 24 hours a day, 7 days a week. They work in WhatsApp, email, or your website. You just see the results.</div>
+        <div class="service-examples">
+          <span class="example-chip">Lead follow-up</span>
+          <span class="example-chip">Customer support</span>
+          <span class="example-chip">WhatsApp chatbot</span>
+          <span class="example-chip">Appointment booking</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="service-name">Your Business, Online and Selling</div>
+        <div class="service-desc">A professional website or platform that actually brings in customers — not just something that exists. We build it, connect it to your business, and make sure it works. No maintenance headaches for you.</div>
+        <div class="service-examples">
+          <span class="example-chip">Business website</span>
+          <span class="example-chip">Online catalogue</span>
+          <span class="example-chip">Booking system</span>
+          <span class="example-chip">Customer portal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="section-navy">
+  <div class="section-inner-wide">
+    <div class="results-header reveal">
+      <div class="section-eyebrow" style="justify-content:center;color:var(--gold);">Real Businesses. Real Results.</div>
+      <h2 class="section-title section-title-white" style="text-align:center;margin-top:0.5rem;">Businesses just like yours,<br>already running on AI.</h2>
+    </div>
+    <div class="results-grid">
+      <div class="result-card reveal">
+        <div class="result-card-industry">Textile Export — Mumbai</div>
+        <div class="result-story">"We were spending 20 hours a week manually tracking inventory, supplier orders, and shipments. Emerald built a system that does all of this automatically. Now I know exactly what's happening across my entire supply chain — before I even finish my morning chai."</div>
+        <div class="result-numbers">
+          <div><div class="rn-val" data-count="20" data-suffix=" hrs">20 hrs</div><div class="rn-lbl">Saved per week</div></div>
+          <div><div class="rn-val" data-count="92" data-suffix="%">92%</div><div class="rn-lbl">Forecast accuracy</div></div>
+          <div><div class="rn-val">₹2.4L</div><div class="rn-lbl">Monthly savings</div></div>
+        </div>
+      </div>
+      <div class="result-card reveal reveal-delay-1">
+        <div class="result-card-industry">Media & Communications — New Delhi</div>
+        <div class="result-story">"Our team used to spend entire days reading news and writing reports. Now our AI system reads thousands of articles, finds the ones that matter, and sends us a summary every morning. We make faster decisions and our clients get better insights."</div>
+        <div class="result-numbers">
+          <div><div class="rn-val" data-count="1800" data-suffix="+">1,800+</div><div class="rn-lbl">Articles tracked daily</div></div>
+          <div><div class="rn-val" data-count="94" data-suffix="%">94%</div><div class="rn-lbl">Analysis accuracy</div></div>
+          <div><div class="rn-val" data-count="14" data-suffix=" hrs">14 hrs</div><div class="rn-lbl">Saved every day</div></div>
+        </div>
+      </div>
+      <div class="result-card reveal reveal-delay-2">
+        <div class="result-card-industry">Retail Chain — Delhi NCR</div>
+        <div class="result-story">"Managing 6 stores meant constant confusion — which store had which stock, which salesperson was performing, which products were moving. Emerald gave me one clear dashboard. I check it every morning in 5 minutes and I know everything."</div>
+        <div class="result-numbers">
+          <div><div class="rn-val">6</div><div class="rn-lbl">Stores, one view</div></div>
+          <div><div class="rn-val" data-count="38" data-suffix="%">38%</div><div class="rn-lbl">Revenue increase</div></div>
+          <div><div class="rn-val">0</div><div class="rn-lbl">Manual reports needed</div></div>
+        </div>
+      </div>
+      <div class="result-card reveal reveal-delay-3">
+        <div class="result-card-industry">Professional Services — New Delhi</div>
+        <div class="result-story">"We were losing leads because our team couldn't follow up fast enough. Emerald built an AI that instantly responds to every enquiry on WhatsApp, qualifies the lead, and books a call — even at 11pm. We've doubled our conversions."</div>
+        <div class="result-numbers">
+          <div><div class="rn-val" data-count="2" data-suffix="×">2×</div><div class="rn-lbl">Lead conversions</div></div>
+          <div><div class="rn-val">24/7</div><div class="rn-lbl">Response time</div></div>
+          <div><div class="rn-val">0</div><div class="rn-lbl">Leads lost to slow follow-up</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why" class="section-cream">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div class="reveal">
+        <div class="section-eyebrow">Why Emerald AI</div>
+        <h2 class="section-title">We are not a software company.<br>We are business people<br>who know AI.</h2>
+        <p class="section-sub" style="margin-top:1rem;">The difference is everything. We don't sell you a tool and walk away. We come into your business, understand it fully, and build something that truly fits.</p>
+        <div class="why-points" style="margin-top:2rem;">
+          <div class="why-point reveal">
+            <div class="why-check">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <h4>100% custom for your business</h4>
+              <p>No generic tools. Everything we build is made specifically for how your business works — your processes, your people, your goals.</p>
+            </div>
+          </div>
+          <div class="why-point reveal reveal-delay-1">
+            <div class="why-check">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <h4>We handle everything, end to end</h4>
+              <p>From understanding your business to going live and beyond — we manage it all. You don't need a single technical person on your team.</p>
+            </div>
+          </div>
+          <div class="why-point reveal reveal-delay-2">
+            <div class="why-check">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <h4>Confidential and secure</h4>
+              <p>Your business data stays private. We operate with the same discretion you'd expect from your trusted CA or legal advisor.</p>
+            </div>
+          </div>
+          <div class="why-point reveal reveal-delay-3">
+            <div class="why-check">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <h4>We stay with you</h4>
+              <p>We don't disappear after handover. We monitor your systems, fix any issues, and keep improving them as your business grows.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="why-right">
+          <div class="why-right-title">The Emerald AI promise:<br><em>You stay ahead.<br>Without the pain.</em></div>
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <div class="tb-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="tb-text">
+                <div class="t">Enterprise-grade security</div>
+                <div class="s">Your data is protected and never shared</div>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="tb-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="tb-text">
+                <div class="t">Dedicated support team</div>
+                <div class="s">A real person available when you need us</div>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="tb-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="tb-text">
+                <div class="t">99.7% system uptime</div>
+                <div class="s">Your AI systems run reliably, every single day</div>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="tb-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="tb-text">
+                <div class="t">Results guaranteed or we fix it</div>
+                <div class="s">We don't stop until the system is working for you</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-white">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-form reveal">
+        <div class="contact-form-title">Tell us about your business</div>
+        <div class="contact-form-sub">No sales pitch. No jargon. Just a conversation about your business and what you'd like to do better. We'll tell you honestly if and how AI can help.</div>
+        <div class="form-row">
+          <label class="form-label" for="name">Your Name</label>
+          <input class="form-input" id="name" type="text" placeholder="Suresh Agarwal">
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="phone">Phone Number</label>
+          <input class="form-input" id="phone" type="tel" placeholder="+91 98XXX XXXXX">
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="business">Type of Business</label>
+          <select class="form-select" id="business">
+            <option value="" disabled selected>Select your industry</option>
+            <option>Manufacturing / Export</option>
+            <option>Retail / Distribution</option>
+            <option>Healthcare / Clinics</option>
+            <option>Real Estate</option>
+            <option>Education / Training</option>
+            <option>Professional Services (CA, Legal, Consulting)</option>
+            <option>Hospitality / Food &amp; Beverage</option>
+            <option>Media / Communications</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="challenge">What's your biggest challenge right now?</label>
+          <textarea class="form-textarea" id="challenge" rows="4" placeholder="Tell us in simple words what's slowing you down or what you'd love to improve in your business..."></textarea>
+        </div>
+        <button class="form-submit" onclick="handleSubmit(this)">Request a Callback</button>
+      </div>
+      <div class="contact-info reveal reveal-delay-1">
+        <div class="contact-info-title">The right AI system<br>changes <em>everything.</em></div>
+        <div class="contact-info-body">We take on a small number of clients at a time so we can give each business our full attention. If you are serious about growing your business, let's have a conversation. No obligation.</div>
+        <div class="info-blocks">
+          <div class="info-block">
+            <div class="ib-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="ib-text">
+              <div class="l">Email</div>
+              <div class="v"><a href="mailto:hello@emeraldai.in">hello@emeraldai.in</a></div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="ib-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div class="ib-text">
+              <div class="l">We respond within</div>
+              <div class="v">24 hours — guaranteed</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="ib-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="ib-text">
+              <div class="l">Where we work</div>
+              <div class="v">India-based · Clients across the country</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="ib-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="ib-text">
+              <div class="l">Currently accepting</div>
+              <div class="v" style="color:var(--gold);">New clients for Q3 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="nav-logo-mark">
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+        <path d="M9 2L15.5 6V12L9 16L2.5 12V6L9 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="9" cy="9" r="2.5" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="footer-brand">EMERALD <span>AI</span></div>
+  </div>
+  <div class="footer-copy">© 2026 Emerald AI Solutions. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#services">What We Do</a>
+    <a href="#results">Our Work</a>
+    <a href="#contact">Talk to Us</a>
+  </div>
+</footer>
+
+<script>
+// ── HAMBURGER ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+});
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+  hamburger.classList.remove('open');
+}
+
+// ── NAV SCROLL SHADOW ──
+const navEl = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// ── SCROLL REVEAL (.reveal elements) ──
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── PROCESS STEPS (their own observer for nth-child stagger) ──
+const stepObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); stepObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.process-step').forEach(el => stepObs.observe(el));
+
+// ── GOLD RULE (width animation) ──
+const ruleObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ruleObs.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.gold-rule').forEach(el => ruleObs.observe(el));
+
+// ── HERO COUNTER ──
+function animateHeroCount(el, target) {
+  let current = 0;
+  const step = target / 60;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = Math.round(current) + '+';
+    if (current >= target) clearInterval(timer);
+  }, 25);
+}
+const heroCounterEl = document.querySelector('[data-target]');
+if (heroCounterEl) {
+  const obs = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { animateHeroCount(heroCounterEl, +heroCounterEl.dataset.target); obs.unobserve(heroCounterEl); }
+  }, { threshold: 0.5 });
+  obs.observe(heroCounterEl);
+}
+
+// ── RESULT NUMBER COUNTERS ──
+function animateCount(el, target, suffix) {
+  const duration = 1400;
+  const start = performance.now();
+  (function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const val = Math.round(eased * target);
+    el.textContent = (target >= 1000 ? val.toLocaleString('en-IN') : val) + suffix;
+    if (t < 1) requestAnimationFrame(step);
+    else el.textContent = (target >= 1000 ? target.toLocaleString('en-IN') : target) + suffix;
+  })(start);
+}
+
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      animateCount(el, +el.dataset.count, el.dataset.suffix || '');
+      countObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+// ── FORM SUBMIT ──
+async function handleSubmit(btn) {
+  const name      = document.getElementById('name').value.trim();
+  const phone     = document.getElementById('phone').value.trim();
+  const business  = document.getElementById('business').value;
+  const challenge = document.getElementById('challenge').value.trim();
+
+  if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: 'f0e7f085-565e-4944-8ae3-186b93000cac',
+        subject: 'New Inquiry — Emerald AI Solutions',
+        from_name: 'Emerald AI Website',
+        Name: name, Phone: phone,
+        'Business Type': business || 'Not specified',
+        'Challenge / Message': challenge || 'Not provided'
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      btn.textContent = '✓ Received — we will call you within 24 hours';
+      btn.style.background = '#16a34a';
+      ['name','phone','challenge'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('business').selectedIndex = 0;
+    } else {
+      throw new Error(data.message || 'Submission failed');
+    }
+  } catch (err) {
+    btn.textContent = 'Something went wrong — please try again';
+    btn.style.background = '#dc2626';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = 'Request a Callback'; btn.style.background = ''; }, 3000);
+  }
+}
+</script>
+</body>
+</html>
