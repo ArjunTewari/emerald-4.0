@@ -7,7 +7,8 @@
   <meta name="keywords" content="AI for business, automation, Indian businesses, AI solutions, Emerald AI">
   <link rel="canonical" href="https://www.emeraldai.in/">
   <meta name="robots" content="index, follow">
-  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 <title>Emerald AI — AI for Your Business. No Learning Required.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,12 +90,13 @@
     display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
   }
   .nav-logo-mark {
-    width: 36px; height: 36px; background: var(--navy);
+    width: 36px; height: 36px;
     display: grid; place-items: center;
     transition: transform var(--dur-mid) var(--ease-expo);
   }
   .nav-logo:hover .nav-logo-mark { transform: rotate(30deg); }
-  .nav-logo-mark svg { color: var(--gold); }
+  .nav-logo-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .footer-logo .nav-logo-mark { background: var(--cream); padding: 6px; }
   .nav-brand { font-family: var(--font-serif); font-size: 1.1rem; color: var(--navy); font-weight: 600; letter-spacing: 0.01em; }
   .nav-brand span { color: var(--gold); }
   .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
@@ -472,6 +474,51 @@
   .tb-text .s { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 0.15rem; }
 
   /* ══════════════════════════════════════════
+     BLOG
+  ══════════════════════════════════════════ */
+  #blog { background: var(--white); }
+  .blog-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border); margin-top: 3rem;
+  }
+  .blog-card {
+    background: var(--white); padding: 2.25rem 2rem;
+    display: flex; flex-direction: column; text-decoration: none;
+    position: relative; overflow: hidden;
+    transition: background var(--dur-mid),
+                transform var(--dur-mid) var(--ease-expo),
+                box-shadow var(--dur-mid);
+  }
+  .blog-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.45s var(--ease-expo);
+  }
+  .blog-card:hover::before { transform: scaleX(1); }
+  .blog-card:hover {
+    background: var(--cream);
+    transform: translateY(-5px);
+    box-shadow: 0 18px 44px rgba(12,35,64,0.1);
+  }
+  .blog-meta {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .blog-meta::before { content: ''; display: block; width: 12px; height: 1px; background: var(--gold); }
+  .blog-card-title {
+    font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700;
+    color: var(--navy); line-height: 1.35; margin-bottom: 0.75rem;
+  }
+  .blog-excerpt { font-size: 0.88rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 1.5rem; }
+  .blog-readmore {
+    margin-top: auto; font-size: 0.82rem; font-weight: 600; color: var(--navy);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: color var(--dur-fast), gap var(--dur-fast);
+  }
+  .blog-card:hover .blog-readmore { color: var(--gold); gap: 0.7rem; }
+
+  /* ══════════════════════════════════════════
      CONTACT
   ══════════════════════════════════════════ */
   #contact { background: var(--white); }
@@ -552,6 +599,13 @@
     transition: color var(--dur-fast), transform var(--dur-fast);
   }
   .footer-links a:hover { color: var(--gold); transform: translateY(-1px); }
+  .footer-social { display: flex; gap: 0.75rem; }
+  .footer-social a {
+    width: 34px; height: 34px; display: grid; place-items: center;
+    border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6);
+    transition: border-color var(--dur-fast), color var(--dur-fast), transform var(--dur-fast);
+  }
+  .footer-social a:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
 
   /* ══════════════════════════════════════════
      SCROLL REVEAL
@@ -635,6 +689,7 @@
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
     .results-grid { grid-template-columns: 1fr; }
     .process-steps { grid-template-columns: 1fr 1fr; }
+    .blog-grid { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 768px) {
@@ -655,6 +710,7 @@
     .process-steps { grid-template-columns: 1fr; }
     .process-step { padding: 2rem 1.5rem; }
     .results-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
     .result-numbers { flex-wrap: wrap; gap: 1.25rem; }
     .why-grid { grid-template-columns: 1fr; }
     .why-right { padding: 2rem 1.5rem; }
@@ -695,9 +751,8 @@
   <meta property="og:url" content="https://www.emeraldai.in/">
   <meta property="og:image" content="https://www.emeraldai.in/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@yourhandle">
 
-  <!-- Structured data (replace URLs/logo with real values) -->
+  <!-- Structured data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -705,7 +760,10 @@
       "name": "Emerald AI",
       "url": "https://www.emeraldai.in",
       "logo": "https://www.emeraldai.in/logo.png",
-      "sameAs": []
+      "sameAs": [
+        "https://www.linkedin.com/company/emerald-ai-solutions/",
+        "https://www.instagram.com/bespoke.emeraldai/"
+      ]
   }
   </script>
 </head>
@@ -715,10 +773,7 @@
 <nav id="main-nav">
   <a href="#" class="nav-logo">
     <div class="nav-logo-mark">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <path d="M9 2L15.5 6V12L9 16L2.5 12V6L9 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        <circle cx="9" cy="9" r="2.5" fill="currentColor"/>
-      </svg>
+      <img src="/logo-mark.png" alt="Emerald AI logo" width="36" height="36">
     </div>
     <div class="nav-brand">EMERALD <span>AI</span></div>
   </a>
@@ -727,6 +782,7 @@
     <li><a href="#services">What We Do</a></li>
     <li><a href="#results">Our Work</a></li>
     <li><a href="#why">Why Us</a></li>
+    <li><a href="#blog">Insights</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Talk to Us</a>
   <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
@@ -741,6 +797,7 @@
     <li><a href="#services" onclick="closeMobileMenu()">What We Do</a></li>
     <li><a href="#results" onclick="closeMobileMenu()">Our Work</a></li>
     <li><a href="#why" onclick="closeMobileMenu()">Why Us</a></li>
+    <li><a href="#blog" onclick="closeMobileMenu()">Insights</a></li>
   </ul>
   <a href="#contact" class="mob-cta" onclick="closeMobileMenu()">Talk to Us</a>
 </div>
@@ -1002,6 +1059,37 @@
   </div>
 </section>
 
+<!-- BLOG -->
+<section id="blog" class="section-white">
+  <div class="section-inner-wide">
+    <div class="reveal">
+      <div class="section-eyebrow">Insights</div>
+      <h2 class="section-title">Straight talk on AI,<br>for business owners</h2>
+      <p class="section-sub">No jargon, no hype. Practical thinking on how AI actually helps a business like yours — written for owners, not engineers.</p>
+    </div>
+    <div class="blog-grid">
+      <a href="/blog/5-signs-your-business-is-ready-for-ai.html" class="blog-card reveal">
+        <div class="blog-meta">10 July 2026 · Strategy</div>
+        <div class="blog-card-title">5 Signs Your Business Is Ready for AI (And 2 Signs It Isn't)</div>
+        <div class="blog-excerpt">Most owners ask "should we use AI?" The better question is "where would it pay for itself first?" Here's how to tell — honestly.</div>
+        <span class="blog-readmore">Read article <span aria-hidden="true">→</span></span>
+      </a>
+      <a href="/blog/how-indian-smes-save-20-hours-a-week-with-ai.html" class="blog-card reveal reveal-delay-1">
+        <div class="blog-meta">24 June 2026 · Automation</div>
+        <div class="blog-card-title">How Indian SMEs Are Saving 20+ Hours a Week with AI</div>
+        <div class="blog-excerpt">The biggest wins aren't futuristic. They're boring: invoices, follow-ups, reports, stock alerts. Here's where the hours actually go — and how to get them back.</div>
+        <span class="blog-readmore">Read article <span aria-hidden="true">→</span></span>
+      </a>
+      <a href="/blog/whatsapp-ai-agents-24-7-sales.html" class="blog-card reveal reveal-delay-2">
+        <div class="blog-meta">15 July 2026 · Sales</div>
+        <div class="blog-card-title">WhatsApp AI Agents: The 24/7 Salesperson You're Not Using Yet</div>
+        <div class="blog-excerpt">A lead that waits an hour for a reply is a lead half-lost. What an AI agent on WhatsApp actually does, what it costs, and where it goes wrong.</div>
+        <span class="blog-readmore">Read article <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- WHY US -->
 <section id="why" class="section-cream">
   <div class="section-inner">
@@ -1182,10 +1270,7 @@
 <footer>
   <div class="footer-logo">
     <div class="nav-logo-mark">
-      <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
-        <path d="M9 2L15.5 6V12L9 16L2.5 12V6L9 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        <circle cx="9" cy="9" r="2.5" fill="currentColor"/>
-      </svg>
+      <img src="/logo-mark.png" alt="Emerald AI logo" width="36" height="36">
     </div>
     <div class="footer-brand">EMERALD <span>AI</span></div>
   </div>
@@ -1193,7 +1278,16 @@
   <div class="footer-links">
     <a href="#services">What We Do</a>
     <a href="#results">Our Work</a>
+    <a href="#blog">Insights</a>
     <a href="#contact">Talk to Us</a>
+  </div>
+  <div class="footer-social">
+    <a href="https://www.linkedin.com/company/emerald-ai-solutions/" target="_blank" rel="noopener" aria-label="Emerald AI on LinkedIn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/bespoke.emeraldai/" target="_blank" rel="noopener" aria-label="Emerald AI on Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor" stroke="none"/></svg>
+    </a>
   </div>
 </footer>
 
