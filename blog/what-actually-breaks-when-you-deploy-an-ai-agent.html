@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The real failure points when an AI agent meets a live business process, and how we plan around them before launch, not after.">
+<link rel="canonical" href="https://www.emeraldai.in/blog/what-actually-breaks-when-you-deploy-an-ai-agent.html">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>What Actually Breaks When You Deploy an AI Agent — Emerald AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta property="og:title" content="What Actually Breaks When You Deploy an AI Agent">
+<meta property="og:description" content="The real failure points when an AI agent meets a live business process, and how we plan around them before launch, not after.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.emeraldai.in/blog/what-actually-breaks-when-you-deploy-an-ai-agent.html">
+<meta property="og:image" content="https://www.emeraldai.in/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "BlogPosting",
+"headline": "What Actually Breaks When You Deploy an AI Agent",
+"datePublished": "2026-07-20",
+"author": { "@type": "Organization", "name": "Emerald AI" },
+"publisher": { "@type": "Organization", "name": "Emerald AI", "logo": { "@type": "ImageObject", "url": "https://www.emeraldai.in/logo.png" } },
+"mainEntityOfPage": "https://www.emeraldai.in/blog/what-actually-breaks-when-you-deploy-an-ai-agent.html"
+}
+</script>
+<style>
+:root {
+--navy: #0C2340; --navy-mid: #163760; --gold: #C4922A; --gold-light: #E8B84B;
+--cream: #FBF8F2; --cream-dark: #F2EDE3; --white: #FFFFFF;
+--text-dark: #0C1B2E; --text-mid: #3D5166; --border: #DDD5C8;
+--font-serif: 'Playfair Display', Georgia, serif;
+--font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+--dur-fast: 180ms; --dur-mid: 320ms;
+--ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--white); color: var(--text-dark); font-family: var(--font-sans); }
+nav {
+position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+display: flex; align-items: center; justify-content: space-between;
+padding: 0 3rem; height: 70px;
+background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+border-bottom: 1px solid var(--border);
+}
+.nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.nav-logo img { width: 36px; height: 36px; object-fit: contain; display: block; }
+.nav-brand { font-family: var(--font-serif); font-size: 1.1rem; color: var(--navy); font-weight: 600; }
+.nav-brand span { color: var(--gold); }
+.nav-cta {
+font-size: 0.85rem; padding: 0.6rem 1.5rem; background: var(--navy); color: var(--white);
+text-decoration: none; font-weight: 600; transition: background var(--dur-fast);
+}
+.nav-cta:hover { background: var(--navy-mid); }
+article { max-width: 720px; margin: 0 auto; padding: 9rem 1.5rem 4rem; }
+.post-meta {
+display: inline-flex; align-items: center; gap: 0.75rem;
+font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem;
+}
+.post-meta::before { content: ''; display: block; width: 24px; height: 2px; background: var(--gold); }
+h1 {
+font-family: var(--font-serif); font-size: clamp(2rem, 4.5vw, 3rem);
+font-weight: 700; line-height: 1.18; color: var(--navy); margin-bottom: 1.5rem;
+}
+.gold-rule { width: 60px; height: 3px; background: var(--gold); margin-bottom: 2.5rem; }
+article p { font-size: 1.02rem; color: var(--text-mid); line-height: 1.85; margin-bottom: 1.5rem; }
+article h2 { font-family: var(--font-serif); font-size: 1.5rem; color: var(--navy); margin: 2.5rem 0 1rem; line-height: 1.3; }
+article ul { margin: 0 0 1.5rem 1.25rem; }
+article li { font-size: 1.02rem; color: var(--text-mid); line-height: 1.85; margin-bottom: 0.5rem; }
+article strong { color: var(--navy); }
+blockquote {
+border-left: 3px solid var(--gold); padding: 0.25rem 0 0.25rem 1.25rem;
+font-style: italic; color: var(--text-mid); margin-bottom: 1.5rem;
+}
+.post-cta {
+background: var(--navy); padding: 2.5rem; margin-top: 3rem; text-align: center;
+}
+.post-cta .t { font-family: var(--font-serif); font-size: 1.5rem; color: var(--white); font-weight: 700; margin-bottom: 0.6rem; }
+.post-cta .s { font-size: 0.9rem; color: rgba(255,255,255,0.65); margin-bottom: 1.5rem; }
+.btn-gold {
+display: inline-block; font-size: 0.9rem; padding: 0.875rem 2rem;
+background: var(--gold); color: var(--navy); font-weight: 700; text-decoration: none;
+transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+.back-link { display: inline-block; margin-top: 2.5rem; font-size: 0.88rem; color: var(--navy); text-decoration: none; font-weight: 600; }
+.back-link:hover { color: var(--gold); }
+footer {
+background: var(--navy); padding: 2rem 3rem; margin-top: 4rem;
+display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+border-top: 3px solid var(--gold);
+}
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+.footer-social { display: flex; gap: 0.75rem; }
+.footer-social a {
+width: 34px; height: 34px; display: grid; place-items: center;
+border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6);
+transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+@media (max-width: 768px) {
+nav { padding: 0 1.25rem; }
+article { padding: 7.5rem 1.25rem 3rem; }
+footer { padding: 2rem 1.25rem; justify-content: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="/" class="nav-logo">
+<img src="/logo-mark.png" alt="Emerald AI logo" width="36" height="36">
+<div class="nav-brand">EMERALD <span>AI</span></div>
+</a>
+<a href="/#contact" class="nav-cta">Talk to Us</a>
+</nav>
+
+<article>
+<div class="post-meta">20 July 2026 · Automation</div>
+<h1>What Actually Breaks When You Deploy an AI Agent</h1>
+<div class="gold-rule"></div>
+
+<p>Most conversations about AI agents focus on what they can do. Read customer messages, pull data from five systems, draft a reply, take an action. That part is genuinely solved now. What almost nobody talks about is what happens after launch, when the agent meets a real business instead of a demo.</p>
+
+<p>We've deployed enough of these now to know the failures are predictable. Here is where they actually happen, and how we plan around each one before a system ever goes live.</p>
+
+<h2>It breaks on the exception, not the happy path</h2>
+<p>A demo shows the agent handling a clean request perfectly. Production shows a customer who typos the order number, changes their mind halfway through, or asks something the agent was never scoped to answer. The agent that looks impressive in a demo is often the one that was only ever tested on the happy path. We build for the messy 20% first, the clean 80% takes care of itself.</p>
+
+<h2>It breaks when nobody is watching it fail</h2>
+<p>An agent that quietly gives a wrong answer is worse than one that visibly goes down. Systems need a way to flag their own uncertainty and hand off, and someone on the business side needs to actually see that signal, not have it buried in a log file nobody opens. We treat monitoring as part of the build, not an afterthought bolted on after something goes wrong.</p>
+
+<h2>It breaks at the handoff to a human</h2>
+<p>Every agent should know when to stop. The businesses that get hurt are the ones where the agent was never given a clean way to say "I'm not confident, here's what I know, a person should take this." Designing that handoff, including what context gets passed along so the human doesn't start from zero, matters as much as the automation itself.</p>
+
+<h2>It breaks when the business changes and the agent doesn't</h2>
+<p>Pricing updates. A new product line. A policy that changes after a bad customer experience. An agent built once and left alone drifts out of sync with the business it's supposed to represent. The systems that hold up long term are the ones with an owner on our side checking in on a schedule, not the ones we hand off and walk away from.</p>
+
+<h2>What this means before you start</h2>
+<p>None of this is a reason to wait. It's a reason to ask different questions before you start: who reviews the exceptions, what does the agent do when it's unsure, who owns it three months after launch. A vendor who can't answer those clearly hasn't deployed enough of these to know where they break.</p>
+
+<div class="post-cta">
+<div class="t">Thinking about deploying an AI agent in your business?</div>
+<div class="s">A 30-minute conversation. We'll walk through where it's likely to break in your specific process, and what we'd do about it.</div>
+<a href="/#contact" class="btn-gold">Talk to Us</a>
+</div>
+
+<a href="/#blog" class="back-link">← Back to all insights</a>
+</article>
+
+<footer>
+<div class="footer-copy">© 2026 Emerald AI Solutions. All rights reserved.</div>
+<div class="footer-social">
+<a href="https://www.linkedin.com/company/emerald-ai-solutions/" target="_blank" rel="noopener" aria-label="Emerald AI on LinkedIn">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+</a>
+<a href="https://www.instagram.com/bespoke.emeraldai/" target="_blank" rel="noopener" aria-label="Emerald AI on Instagram">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor" stroke="none"/></svg>
+</a>
+</div>
+</footer>
+
+</body>
+</html>
