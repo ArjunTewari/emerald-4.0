@@ -378,6 +378,18 @@ article h2 {
   background: #171717;
 }
 
+#blog {
+  background: var(--paper);
+}
+
+#blog .section-title {
+  color: var(--signal);
+}
+
+#blog .section-sub {
+  color: var(--charcoal);
+}
+
 .section-cream,
 #process,
 #why {
