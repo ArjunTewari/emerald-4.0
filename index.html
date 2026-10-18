@@ -1073,6 +1073,7 @@
           <div class="founder-reel-media">
             <video
               controls
+              muted
               playsinline
               preload="metadata"
               poster="/assets/images/founders-voice-01-poster.jpg"
@@ -1430,8 +1431,11 @@ if (founderCarousel) {
   const founderNext = document.querySelector('.founder-carousel-next');
   const founderCount = document.querySelector('.founder-carousel-count');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const founderVideos = [...founderCarousel.querySelectorAll('video')];
+  const founderPlaybackTarget = founderCarousel.querySelector('.founder-reel-media');
   let founderIndex = 0;
   let founderTimer;
+  let founderInView = false;
 
   const updateFounderCarousel = (nextIndex, behavior = 'smooth') => {
     founderIndex = (nextIndex + founderCards.length) % founderCards.length;
@@ -1443,7 +1447,7 @@ if (founderCarousel) {
   const stopFounderCarousel = () => window.clearInterval(founderTimer);
   const startFounderCarousel = () => {
     stopFounderCarousel();
-    if (founderCards.length > 1 && !reduceMotion) {
+    if (founderInView && founderCards.length > 1 && !reduceMotion) {
       founderTimer = window.setInterval(() => updateFounderCarousel(founderIndex + 1), 4800);
     }
   };
@@ -1481,13 +1485,35 @@ if (founderCarousel) {
     });
     video.addEventListener('pause', () => {
       card.classList.remove('is-playing');
-      startFounderCarousel();
+      if (founderInView) startFounderCarousel();
     });
     video.addEventListener('ended', () => {
       card.classList.remove('is-playing');
-      startFounderCarousel();
+      if (founderInView) startFounderCarousel();
     });
   });
+
+  if (founderPlaybackTarget) {
+    const founderPlaybackObserver = new IntersectionObserver(([entry]) => {
+      founderInView = entry.isIntersecting && entry.intersectionRatio >= 0.45;
+
+      if (!founderInView) {
+        founderVideos.forEach(video => video.pause());
+        stopFounderCarousel();
+        return;
+      }
+
+      const activeVideo = founderCards[founderIndex]?.querySelector('video');
+      if (!activeVideo) return;
+
+      activeVideo.play().catch(() => {
+        activeVideo.muted = true;
+        activeVideo.play().catch(() => {});
+      });
+    }, { threshold: [0, 0.45] });
+
+    founderPlaybackObserver.observe(founderPlaybackTarget);
+  }
 }
 
 // ── FORM SUBMIT ──
