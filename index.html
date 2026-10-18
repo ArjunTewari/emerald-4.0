@@ -743,7 +743,7 @@
     .trust-badge { opacity: 1; transform: none !important; }
   }
 </style>
-<link rel="stylesheet" href="/brand-refresh.css?v=starline-red-align-20260927">
+<link rel="stylesheet" href="/brand-refresh.css?v=founder-voice-20261019">
   <!-- Open Graph / Twitter -->
   <meta property="og:title" content="Starline Technologies — AI for Your Business. No Learning Required.">
   <meta property="og:description" content="We bring AI directly into your business — set up and managed by us. Save time, increase revenue, no learning required.">
@@ -1038,6 +1038,58 @@
           <div><div class="rn-val">24/7</div><div class="rn-lbl">Response time</div></div>
           <div><div class="rn-val">0</div><div class="rn-lbl">Leads lost to slow follow-up</div></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER'S VOICE -->
+<section id="founder-voice" class="founder-voice-section" aria-labelledby="founder-voice-title">
+  <div class="section-inner-wide">
+    <div class="founder-voice-intro reveal">
+      <div>
+        <div class="section-eyebrow">From the Founder</div>
+        <h2 id="founder-voice-title" class="section-title">Ideas worth hearing<br>from the source.</h2>
+      </div>
+      <div class="founder-voice-copy">
+        <p>A candid short-form series on practical AI, automation, and the thinking behind Starline Technologies.</p>
+        <div class="founder-carousel-status">
+          <span class="founder-carousel-count" aria-live="polite">01 / 01</span>
+          <div class="founder-carousel-controls" aria-label="Founder’s Voice carousel controls">
+            <button class="founder-carousel-button founder-carousel-prev" type="button" aria-label="Previous reel" aria-controls="founder-reel-track">
+              <span aria-hidden="true">←</span>
+            </button>
+            <button class="founder-carousel-button founder-carousel-next" type="button" aria-label="Next reel" aria-controls="founder-reel-track">
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="founder-carousel reveal reveal-delay-1" data-founder-carousel>
+      <div id="founder-reel-track" class="founder-reel-track" tabindex="0" aria-label="Founder’s Voice reels">
+        <article class="founder-reel-card" data-founder-reel>
+          <div class="founder-reel-media">
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              poster="/assets/images/founders-voice-01-poster.jpg"
+              aria-label="Founder’s Voice reel 1">
+              <source src="/assets/videos/founders-voice-01.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <button class="founder-reel-play" type="button" aria-label="Play Founder’s Voice reel 1">
+              <span aria-hidden="true"></span>
+            </button>
+            <div class="founder-reel-index" aria-hidden="true">01</div>
+          </div>
+          <div class="founder-reel-caption">
+            <span>Founder’s Voice</span>
+            <strong>AI, from the builder’s perspective.</strong>
+          </div>
+        </article>
       </div>
     </div>
   </div>
@@ -1368,6 +1420,75 @@ const countObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+// ── FOUNDER'S VOICE CAROUSEL ──
+const founderCarousel = document.querySelector('[data-founder-carousel]');
+if (founderCarousel) {
+  const founderTrack = founderCarousel.querySelector('.founder-reel-track');
+  const founderCards = [...founderTrack.querySelectorAll('[data-founder-reel]')];
+  const founderPrev = document.querySelector('.founder-carousel-prev');
+  const founderNext = document.querySelector('.founder-carousel-next');
+  const founderCount = document.querySelector('.founder-carousel-count');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let founderIndex = 0;
+  let founderTimer;
+
+  const updateFounderCarousel = (nextIndex, behavior = 'smooth') => {
+    founderIndex = (nextIndex + founderCards.length) % founderCards.length;
+    const card = founderCards[founderIndex];
+    founderTrack.scrollTo({ left: card.offsetLeft - founderTrack.offsetLeft, behavior });
+    founderCount.textContent = `${String(founderIndex + 1).padStart(2, '0')} / ${String(founderCards.length).padStart(2, '0')}`;
+  };
+
+  const stopFounderCarousel = () => window.clearInterval(founderTimer);
+  const startFounderCarousel = () => {
+    stopFounderCarousel();
+    if (founderCards.length > 1 && !reduceMotion) {
+      founderTimer = window.setInterval(() => updateFounderCarousel(founderIndex + 1), 4800);
+    }
+  };
+
+  if (founderCards.length < 2) {
+    founderCarousel.classList.add('is-single');
+    founderCarousel.closest('.founder-voice-section').classList.add('is-single');
+    founderPrev.disabled = true;
+    founderNext.disabled = true;
+  } else {
+    founderPrev.addEventListener('click', () => { updateFounderCarousel(founderIndex - 1); startFounderCarousel(); });
+    founderNext.addEventListener('click', () => { updateFounderCarousel(founderIndex + 1); startFounderCarousel(); });
+    founderCarousel.addEventListener('mouseenter', stopFounderCarousel);
+    founderCarousel.addEventListener('mouseleave', startFounderCarousel);
+    founderCarousel.addEventListener('focusin', stopFounderCarousel);
+    founderCarousel.addEventListener('focusout', startFounderCarousel);
+    founderCarousel.addEventListener('pointerdown', stopFounderCarousel, { passive: true });
+    startFounderCarousel();
+  }
+
+  founderCarousel.querySelectorAll('.founder-reel-card').forEach(card => {
+    const video = card.querySelector('video');
+    const playButton = card.querySelector('.founder-reel-play');
+
+    playButton.addEventListener('click', async () => {
+      founderCarousel.querySelectorAll('video').forEach(other => {
+        if (other !== video) other.pause();
+      });
+      try { await video.play(); } catch (error) { video.controls = true; }
+    });
+
+    video.addEventListener('play', () => {
+      card.classList.add('is-playing');
+      stopFounderCarousel();
+    });
+    video.addEventListener('pause', () => {
+      card.classList.remove('is-playing');
+      startFounderCarousel();
+    });
+    video.addEventListener('ended', () => {
+      card.classList.remove('is-playing');
+      startFounderCarousel();
+    });
+  });
+}
 
 // ── FORM SUBMIT ──
 async function handleSubmit(btn) {
