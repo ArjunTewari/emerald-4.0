@@ -1310,11 +1310,11 @@
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer id="site-footer">
   <div class="footer-logo">
     <img class="footer-wordmark" src="/assets/images/starline-lockup-light.png?v=red-20260927" alt="Starline Technologies" width="220" height="120">
   </div>
-  <div class="footer-copy">© 2026 Starline Technologies Pvt Ltd. All rights reserved.</div>
+  <div class="footer-copy">Starline Technologies — a brand of Emerald AI.<br>© 2026 Emerald AI. All rights reserved.</div>
   <div class="footer-links">
     <a href="#services">What We Do</a>
     <a href="#results">Our Work</a>
@@ -1534,7 +1534,7 @@ async function handleSubmit(btn) {
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         access_key: 'f0e7f085-565e-4944-8ae3-186b93000cac',
-        subject: 'New Inquiry — Starline Technologies Pvt Ltd',
+        subject: 'New Inquiry — Starline Technologies',
         from_name: 'Starline Technologies Website',
         Name: name, Phone: phone,
         'Business Type': business || 'Not specified',
