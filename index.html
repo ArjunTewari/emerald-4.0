@@ -1059,7 +1059,7 @@
       <div class="founder-voice-copy">
         <p>A candid short-form series on practical AI, automation, and the thinking behind Starline Technologies.</p>
         <div class="founder-carousel-status">
-          <span class="founder-carousel-count" aria-live="polite">01 / 01</span>
+          <span class="founder-carousel-count" aria-live="polite">01 / 02</span>
           <div class="founder-carousel-controls" aria-label="Founder’s Voice carousel controls">
             <button class="founder-carousel-button founder-carousel-prev" type="button" aria-label="Previous reel" aria-controls="founder-reel-track">
               <span aria-hidden="true">←</span>
@@ -1090,6 +1090,28 @@
               <span aria-hidden="true"></span>
             </button>
             <div class="founder-reel-index" aria-hidden="true">01</div>
+          </div>
+          <div class="founder-reel-caption">
+            <span>Founder’s Voice</span>
+            <strong>AI, from the builder’s perspective.</strong>
+          </div>
+        </article>
+        <article class="founder-reel-card" data-founder-reel>
+          <div class="founder-reel-media">
+            <video
+              controls
+              muted
+              playsinline
+              preload="metadata"
+              poster="/assets/images/founders-voice-02-poster.jpg"
+              aria-label="Founder’s Voice reel 2">
+              <source src="/assets/videos/founders-voice-02.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <button class="founder-reel-play" type="button" aria-label="Play Founder’s Voice reel 2">
+              <span aria-hidden="true"></span>
+            </button>
+            <div class="founder-reel-index" aria-hidden="true">02</div>
           </div>
           <div class="founder-reel-caption">
             <span>Founder’s Voice</span>
@@ -1456,6 +1478,7 @@ if (founderCarousel) {
   const updateFounderCarousel = (nextIndex, behavior = 'smooth') => {
     founderIndex = (nextIndex + founderCards.length) % founderCards.length;
     const card = founderCards[founderIndex];
+    founderVideos.forEach(video => { if (!card.contains(video)) video.pause(); });
     founderTrack.scrollTo({ left: card.offsetLeft - founderTrack.offsetLeft, behavior });
     founderCount.textContent = `${String(founderIndex + 1).padStart(2, '0')} / ${String(founderCards.length).padStart(2, '0')}`;
   };
