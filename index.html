@@ -1481,6 +1481,15 @@ if (founderCarousel) {
     founderVideos.forEach(video => { if (!card.contains(video)) video.pause(); });
     founderTrack.scrollTo({ left: card.offsetLeft - founderTrack.offsetLeft, behavior });
     founderCount.textContent = `${String(founderIndex + 1).padStart(2, '0')} / ${String(founderCards.length).padStart(2, '0')}`;
+    if (founderInView) playFounderVideo(card.querySelector('video'));
+  };
+
+  const playFounderVideo = video => {
+    if (!video) return;
+    video.play().catch(() => {
+      video.muted = true;
+      video.play().catch(() => {});
+    });
   };
 
   const stopFounderCarousel = () => window.clearInterval(founderTimer);
@@ -1528,7 +1537,9 @@ if (founderCarousel) {
     });
     video.addEventListener('ended', () => {
       card.classList.remove('is-playing');
-      if (founderInView) startFounderCarousel();
+      if (!founderInView) return;
+      if (founderCards.length > 1) updateFounderCarousel(founderIndex + 1);
+      else startFounderCarousel();
     });
   });
 
@@ -1542,13 +1553,7 @@ if (founderCarousel) {
         return;
       }
 
-      const activeVideo = founderCards[founderIndex]?.querySelector('video');
-      if (!activeVideo) return;
-
-      activeVideo.play().catch(() => {
-        activeVideo.muted = true;
-        activeVideo.play().catch(() => {});
-      });
+      playFounderVideo(founderCards[founderIndex]?.querySelector('video'));
     }, { threshold: [0, 0.45] });
 
     founderPlaybackObserver.observe(founderPlaybackTarget);
